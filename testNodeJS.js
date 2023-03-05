@@ -78,4 +78,11 @@ if (s === "tri" && !isNaN(w) && !isNaN(h)){
 */
 
 //สร้าง Link MySQL connection string ด้วย process.env
-const dbString = "mysql://root:pass1234@123.0.0.1:3306/mydb99";
+// importing environmental variables
+import dotenv  from "dotenv"
+import express from "express"
+dotenv.config()
+const {MYSQL_USERNAME,MYSQL_PASSWORD,MYSQL_HOSTNAME,MYSQL_PORT,MYSQL_DB} = process.env
+
+const dbString = `mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@${MYSQL_HOSTNAME}:${MYSQL_PORT}/${MYSQL_DB}`;
+console.log(dbString);
