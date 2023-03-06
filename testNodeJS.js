@@ -1,4 +1,3 @@
-
 /*
 const express = require('express')
 const app = express()
@@ -44,8 +43,6 @@ console.log(testExportVariable);
 fristExportFunction();
 */
 
-
-
 //การรับค่าจาก cmd ด้วย process.argv
 //node testNodeJS.js --s=tri --w=number1 --h=number2
 /*
@@ -79,10 +76,59 @@ if (s === "tri" && !isNaN(w) && !isNaN(h)){
 
 //สร้าง Link MySQL connection string ด้วย process.env
 // importing environmental variables
-import dotenv  from "dotenv"
+/*
+import dotenv  from "dotenv" //<- มันคือ require dotenv
 import express from "express"
 dotenv.config()
 const {MYSQL_USERNAME,MYSQL_PASSWORD,MYSQL_HOSTNAME,MYSQL_PORT,MYSQL_DB} = process.env
 
 const dbString = `mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@${MYSQL_HOSTNAME}:${MYSQL_PORT}/${MYSQL_DB}`;
 console.log(dbString);
+*/
+
+//HTTP Server สร้างแบบไม่ใช้ Lib
+import dotenv from "dotenv";
+dotenv.config();
+import http from "http";
+import mysql from "mysql2/promise";
+
+//NodeJS เชื่อมกับ DataBase MySQL
+const {
+  APP_PORTDEV,
+  MYSQL_USERNAME,
+  MYSQL_PASSWORD,
+  MYSQL_HOSTNAME,
+  MYSQL_PORT,
+  MYSQL_DB,
+} = process.env;
+const dbString = `mysql://${MYSQL_USERNAME}:${MYSQL_PASSWORD}@${MYSQL_HOSTNAME}:${MYSQL_PORT}/${MYSQL_DB}`;
+
+async function startApp() {
+  const db = await mysql.createConnection(dbString);
+
+  const server = http.createServer(async (request, response) => {
+    const { method, url } = request;
+    let content = "";
+
+    if (method === "GET" && url === "/") {
+        const results = await db.query("SELECT * FROM Todo");
+        const resultsString = results[0].map((item) => `<p>${item.title}</p>`).toString(); //return มาเป็น Array
+        content = "<h1>Hello HomePage</h1>" + resultsString;
+        response.setHeader("Content-Type", "text/html; charset=UTF-8");
+        response.statusCode = 200; //ใช้งานได้
+        response.end(content);
+    } else if (method === "GET" && url === "/about") {
+        content = "<h1>Hello About</h1>";
+        response.setHeader("Content-Type", "text/html; charset=UTF-8");
+        response.statusCode = 200;
+        response.end(content);
+    }
+  });
+
+  server.listen(APP_PORTDEV, () => {
+    //สั่ง start Server
+    console.log(`Server is start !!!, on PORT -> ${APP_PORTDEV}`);
+  });
+}
+
+startApp();
