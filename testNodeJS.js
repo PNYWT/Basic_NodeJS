@@ -87,6 +87,7 @@ console.log(dbString);
 */
 
 //HTTP Server สร้างแบบไม่ใช้ Lib
+/*
 import dotenv from "dotenv";
 dotenv.config();
 import http from "http";
@@ -130,5 +131,66 @@ async function startApp() {
     console.log(`Server is start !!!, on PORT -> ${APP_PORTDEV}`);
   });
 }
+startApp();
+*/
 
+//Read File
+/*
+import dotenv from "dotenv";
+dotenv.config();
+import http from "http";
+import fs from "fs";
+import path from "path";
+import { marked } from 'marked';
+const {APP_PORTDEV} = process.env;
+
+function startApp() {
+  const server = http.createServer(async (request, response) => {
+    const { method, url } = request;
+    let content = "";
+
+    if (method === "GET" && url === "/") {
+        try {
+            content = fs.readFileSync(path.resolve("fileText", "home.md"), "utf-8");
+            content = marked(content);
+        } catch(error){
+            console.error(error);
+        }
+        response.setHeader("Content-Type", "text/html; charset=UTF-8");
+        response.statusCode = 200; //ใช้งานได้
+        response.end(content);
+    }
+  });
+  server.listen(APP_PORTDEV, () => {
+    //สั่ง start Server
+    console.log(`Server is start !!!, on PORT -> ${APP_PORTDEV}`);
+  });
+}
+startApp();
+*/
+
+//Write File
+import dotenv from "dotenv";
+dotenv.config();
+import http from "http";
+import fs from "fs";
+const {APP_PORTDEV} = process.env;
+
+function startApp() {
+  const server = http.createServer(async (request, response) => {
+    const { method, url } = request;
+    let content = "";
+    fs.writeFileSync("request.log", "test write");
+
+    if (method === "GET" && url === "/") {
+        response.setHeader("Content-Type", "text/html; charset=UTF-8");
+        response.statusCode = 200; //ใช้งานได้
+        response.end(content);
+    }
+  });
+  server.listen(APP_PORTDEV, () => {
+    //สั่ง start Server
+    console.log(`Server is start !!!, on PORT -> ${APP_PORTDEV}`);
+  });
+}
 startApp();

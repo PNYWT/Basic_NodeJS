@@ -1,0 +1,8 @@
+สวัสดี
+Vestibulum lacinia elit odio, a bibendum purus pulvinar in. Ut euismod placerat augue eu gravida. Donec eget nunc id lectus finibus finibus. Aliquam id lacus feugiat, vestibulum justo eu, condimentum est. Maecenas hendrerit massa quis auctor dignissim. Aliquam tempor diam mi, sit amet pulvinar eros imperdiet posuere.
+
+ฝันดี
+Pellentesque convallis, mauris sit amet sollicitudin tempor, lectus ipsum elementum dui, sit amet feugiat turpis ex et odio. Aliquam sed purus quam. Quisque mattis est ut magna porta bibendum. Nullam tempor, neque vel malesuada rhoncus, diam dui dictum augue, sed convallis ex purus vitae diam.
+
+บ๊ายบาย
+node testNodeJS.js
