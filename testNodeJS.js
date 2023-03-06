@@ -179,14 +179,13 @@ const {APP_PORTDEV} = process.env;
 function startApp() {
   const server = http.createServer(async (request, response) => {
     const { method, url } = request;
-    let content = "";
-    fs.writeFileSync("request.log", "test write");
+    let content = url;
+    const logContent = `${new Date()} : ${method} : ${url}\n`
+    fs.writeFileSync("userRequest.log", logContent, {flag: "a+"});
 
-    if (method === "GET" && url === "/") {
-        response.setHeader("Content-Type", "text/html; charset=UTF-8");
-        response.statusCode = 200; //ใช้งานได้
-        response.end(content);
-    }
+    response.setHeader("Content-Type", "text/html; charset=UTF-8");
+    response.statusCode = 200; //ใช้งานได้
+    response.end(content);
   });
   server.listen(APP_PORTDEV, () => {
     //สั่ง start Server
